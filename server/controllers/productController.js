@@ -22,7 +22,22 @@ const createProduct = async (req, res) => {
 };
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const search = req.query.search; //?search=keyword
+    const page = parseInt(req.query.page) || 1; //?page=2
+    const limit = parseInt(req.query.limit) || 10; //?limit=5
+    const skip = (page - 1) * limit; //?skip=5
+    let filter = {}; //?search=keyword
+    if (search) {
+      filter = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+          { category: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+    const products = await Product.find(filter).skip(skip).limit(limit);
+
     res.status(200).json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -39,6 +54,22 @@ const getProductById = async (req, res) => {
     res.status(200).json(product);
   } catch (error) {
     console.error("Error fetching product:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+const searchProducts = async (req, res) => {
+  try {
+    const { query } = req.query; //?query=keyword
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error searching products:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -80,4 +111,5 @@ export {
   getProductById,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };
