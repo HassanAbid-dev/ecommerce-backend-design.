@@ -47,7 +47,14 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
+export const getUserProfile = async (req, res) => {
+  try {
+    res.status(200).json(req.user); // ✅ already available
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 export const logoutUser = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logout successful" });
