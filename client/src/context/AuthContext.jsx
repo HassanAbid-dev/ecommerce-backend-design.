@@ -25,16 +25,21 @@ export const AuthProvider = ({ children }) => {
 
     userAuthenticated();
   }, []);
-  const register = async (name, email, password) => {
+  const register = async (username, email, password) => {
     try {
       const response = await axiosInstance.post("/users/register", {
-        name,
+        username,
         email,
         password,
       });
       setUser(response.data.user);
+      return { success: true };
     } catch (error) {
-      console.error("Error registering user:", error);
+      console.error("Error registering user:", error.response.data);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Registration failed. Please try again.";
+      throw new Error(errorMessage);
     }
   };
 
@@ -47,9 +52,14 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
       setIsAuthenticated(true);
       setLoading(false);
+      console.log("Login successful:", response.data);
     } catch (error) {
       console.error("Error logging in user:", error);
       setLoading(false);
+      // ✅ Extract a readable message and throw it so Login.jsx can catch it
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+      throw new Error(errorMessage);
     }
   };
   const logout = async () => {
