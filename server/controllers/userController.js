@@ -49,7 +49,7 @@ export const loginUser = async (req, res) => {
 };
 export const getUserProfile = async (req, res) => {
   try {
-    res.status(200).json(req.user); // ✅ already available
+    res.status(200).json({ user: req.user }); // ✅ wrap in { user } to match AuthContext expectation
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).json({ message: "Server error" });

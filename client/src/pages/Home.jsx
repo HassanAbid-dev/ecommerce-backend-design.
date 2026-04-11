@@ -29,7 +29,7 @@ import techImg2 from "../assets/Image/tech/image 29.png";
 import techImg3 from "../assets/Image/tech/image 32.png";
 import techImg4 from "../assets/Image/tech/8.png";
 
-const Home = ({ setPage }) => {
+const Home = () => {
   // Category 1 - Clothes
   const clothesItems = [
     { name: "Men Shirts", price: "15", image: clothImg1 },
@@ -57,7 +57,7 @@ const Home = ({ setPage }) => {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
       {/* ===== STEP 1: Header ===== */}
-      <Header setPage={setPage} />
+      <Header />
 
       {/* ===== STEP 2: Main Content Container ===== */}
       <div className="container">
@@ -91,7 +91,7 @@ const Home = ({ setPage }) => {
         />
 
         {/* ===== STEP 5: Deals and Offers Section ===== */}
-        <Deals setPage={setPage} />
+        <Deals />
 
         {/* ===== STEP 6: Recommended Items Section ===== */}
         <RecommendedItems />

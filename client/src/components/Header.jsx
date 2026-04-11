@@ -1,14 +1,27 @@
-import React from 'react';
-import { Search, User, MessageSquare, Heart, ShoppingCart, Menu, ChevronDown } from 'lucide-react';
-import logo from '../assets/Layout/Brand/logo-colored.png';
-import flagDE from '../assets/Layout1/Image/flags/DE@2x.png';
+import React from "react";
+import {
+  Search,
+  User,
+  MessageSquare,
+  Heart,
+  ShoppingCart,
+  Menu,
+  ChevronDown,
+} from "lucide-react";
+import logo from "../assets/Layout/Brand/logo-colored.png";
+import flagDE from "../assets/Layout1/Image/flags/DE@2x.png";
+import { useNavigate } from "react-router-dom";
 
-const Header = ({ setPage }) => {
+const Header = () => {
+  const navigate = useNavigate();
   return (
     <header className="bg-white border-b border-shade-border lg:sticky top-0 z-50 shadow-sm">
       {/* Top Header */}
       <div className="container py-4 flex items-center justify-between gap-6">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setPage('home')}>
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img src={logo} alt="Brand" className="h-[46px]" />
         </div>
 
@@ -24,26 +37,38 @@ const Header = ({ setPage }) => {
           </div>
           <button
             className="bg-primary hover:bg-primary-dark text-white px-8 py-2 font-medium transition-colors"
-            onClick={() => setPage('listing')}
+            onClick={() => navigate("/products")}
           >
             Search
           </button>
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors" onClick={() => setPage('profile')}>
+          <div
+            className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors"
+            onClick={() => navigate("/profile")}
+          >
             <User className="w-5 h-5 mb-1" />
             <span className="text-xs">Profile</span>
           </div>
-          <div className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors" onClick={() => setPage('message')}>
+          <div
+            className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors"
+            onClick={() => navigate("/messages")}
+          >
             <MessageSquare className="w-5 h-5 mb-1" />
             <span className="text-xs">Message</span>
           </div>
-          <div className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors" onClick={() => setPage('orders')}>
+          <div
+            className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors"
+            onClick={() => navigate("/orders")}
+          >
             <Heart className="w-5 h-5 mb-1" />
             <span className="text-xs">Orders</span>
           </div>
-          <div className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors" onClick={() => setPage('cart')}>
+          <div
+            className="flex flex-col items-center cursor-pointer text-secondary hover:text-primary transition-colors"
+            onClick={() => navigate("/cart")}
+          >
             <ShoppingCart className="w-5 h-5 mb-1" />
             <span className="text-xs">My cart</span>
           </div>
@@ -54,14 +79,32 @@ const Header = ({ setPage }) => {
       <div className="border-t border-shade-border bg-white overflow-x-auto lg:overflow-visible no-scrollbar">
         <div className="container py-3 flex items-center justify-between whitespace-nowrap gap-4">
           <nav className="flex items-center gap-6 font-medium text-dark">
-            <div className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors" onClick={() => setPage('listing')}>
+            <div
+              className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+              onClick={() => navigate("/products")}
+            >
               <Menu className="w-5 h-5" />
               <span>All category</span>
             </div>
-            <a href="#" className="hover:text-primary transition-colors" onClick={(e) => { e.preventDefault(); setPage('listing'); }}>Hot offers</a>
-            <a href="#" className="hover:text-primary transition-colors">Gift boxes</a>
-            <a href="#" className="hover:text-primary transition-colors">Projects</a>
-            <a href="#" className="hover:text-primary transition-colors">Menu item</a>
+            <a
+              href="#"
+              className="hover:text-primary transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/products");
+              }}
+            >
+              Hot offers
+            </a>
+            <a href="#" className="hover:text-primary transition-colors">
+              Gift boxes
+            </a>
+            <a href="#" className="hover:text-primary transition-colors">
+              Projects
+            </a>
+            <a href="#" className="hover:text-primary transition-colors">
+              Menu item
+            </a>
             <div className="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors">
               <span>Help</span>
               <ChevronDown className="w-4 h-4" />
@@ -75,7 +118,11 @@ const Header = ({ setPage }) => {
             </div>
             <div className="flex items-center gap-1 cursor-pointer">
               <span>Ship to</span>
-              <img src={flagDE} alt="DE" className="w-5 h-3 rounded-sm shadow-sm" />
+              <img
+                src={flagDE}
+                alt="DE"
+                className="w-5 h-3 rounded-sm shadow-sm"
+              />
               <ChevronDown className="w-4 h-4 text-secondary" />
             </div>
           </div>
