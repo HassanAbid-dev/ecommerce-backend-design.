@@ -25,7 +25,7 @@ const Products = () => {
 
   return (
     <>
-      <Header />
+      <Header search={search} setSearch={setSearch} setPage={setPage} />
       <ProductListing
         products={products} // real data from DB
         page={page}

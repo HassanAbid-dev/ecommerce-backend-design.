@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const userAuthenticated = async () => {
       try {
         const response = await axiosInstance.get("/users/me");
-        setUser(response.data.user);
+        setUser(response.data);
         setIsAuthenticated(true);
         setLoading(false);
       } catch (error) {
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      setUser(response.data.user);
+      setUser(response.data);
       return { success: true };
     } catch (error) {
       console.error("Error registering user:", error.response.data);
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      setUser(response.data.user);
+      setUser(response.data);
       setIsAuthenticated(true);
       setLoading(false);
       console.log("Login successful:", response.data);

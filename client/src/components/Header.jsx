@@ -12,7 +12,7 @@ import logo from "../assets/Layout/Brand/logo-colored.png";
 import flagDE from "../assets/Layout1/Image/flags/DE@2x.png";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ search, setSearch, setPage }) => {
   const navigate = useNavigate();
   return (
     <header className="bg-white border-b border-shade-border lg:sticky top-0 z-50 shadow-sm">
@@ -30,13 +30,18 @@ const Header = () => {
             type="text"
             placeholder="Search"
             className="flex-1 px-4 py-2 outline-none"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
           <div className="flex items-center border-l px-4 py-2 bg-white cursor-pointer hover:bg-gray-50">
             <span className="text-sm">All category</span>
             <ChevronDown className="w-4 h-4 ml-2" />
           </div>
           <button
-            className="bg-primary hover:bg-primary-dark text-white px-8 py-2 font-medium transition-colors"
+            className="bg-primary hover:bg-primary-dark text-black px-8 py-2 font-medium transition-colors"
             onClick={() => navigate("/products")}
           >
             Search
