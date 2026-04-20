@@ -1,113 +1,194 @@
-import Header from "../components/Header";
-import Hero from "../components/Hero";
-import CategorySection from "../components/CategorySection";
-import Deals from "../components/Deals";
-import RecommendedItems from "../components/RecommendedItems";
-import InquiryForm from "../components/InquiryForm";
-import Services from "../components/Services";
-import Newsletter from "../components/Newsletter";
-import Footer from "../components/Footer";
-
-// Import category banner images from backgrounds
-import clothBannerImg from "../assets/Image/backgrounds/image 98.png";
-import interiorBannerImg from "../assets/Image/backgrounds/image 107.png";
-import techBannerImg from "../assets/Image/backgrounds/image 106.png";
-
-// Import product images
-import clothImg1 from "../assets/Image/interior/1.png";
-import clothImg2 from "../assets/Image/interior/3.png";
-import clothImg3 from "../assets/Image/interior/6.png";
-import clothImg4 from "../assets/Image/interior/7.png";
-
-import interiorImg1 from "../assets/Image/interior/8.png";
-import interiorImg2 from "../assets/Image/interior/9.png";
-import interiorImg3 from "../assets/Image/interior/1.png";
-import interiorImg4 from "../assets/Image/interior/3.png";
-
-import techImg1 from "../assets/Image/tech/image 23.png";
-import techImg2 from "../assets/Image/tech/image 29.png";
-import techImg3 from "../assets/Image/tech/image 32.png";
-import techImg4 from "../assets/Image/tech/8.png";
-
+import React, { useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Home = () => {
-  // Category 1 - Clothes
-  const clothesItems = [
-    { name: "Men Shirts", price: "15", image: clothImg1 },
-    { name: "Winter Coats", price: "45", image: clothImg2 },
-    { name: "Jeans", price: "35", image: clothImg3 },
-    { name: "Accessories", price: "12", image: clothImg4 },
-  ];
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchedProdicts = async () => {
+      try {
+        let fetchedProducts = await axiosInstance.get(
+          "/products/getAllProducts",
+          {
+            params: { limit: 3, page: 1 },
+          },
+        );
 
-  // Category 2 - Home Interiors
-  const interiorItems = [
-    { name: "Furniture", price: "120", image: interiorImg1 },
-    { name: "Lighting", price: "25", image: interiorImg2 },
-    { name: "Decor Items", price: "18", image: interiorImg3 },
-    { name: "Cushions", price: "22", image: interiorImg4 },
-  ];
-
-  // Category 3 - Tech & Electronics
-  const techItems = [
-    { name: "Smartphones", price: "250", image: techImg1 },
-    { name: "Laptops", price: "600", image: techImg2 },
-    { name: "Headphones", price: "80", image: techImg3 },
-    { name: "Cameras", price: "500", image: techImg4 },
-  ];
-
+        setProducts(fetchedProducts.data.products);
+      } catch (error) {
+        console.log("ERROR:", error); // 👈 catch the actual error
+      }
+    };
+    fetchedProdicts();
+  }, []);
+  const [products, setProducts] = useState([]);
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
-      {/* ===== STEP 1: Header ===== */}
-      <Header />
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50">
+      {/* Hero Section */}
+      <section className="pt-20 pb-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            Welcome to ShopHub
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Discover a curated collection of premium products handpicked just
+            for you. Shop with confidence, style, and ease.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <button
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300 shadow-md"
+              onClick={() => navigate("/products")}
+            >
+              Shop Now
+            </button>
+            <button className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition duration-300">
+              Learn More
+            </button>
+          </div>
+        </div>
+      </section>
 
-      {/* ===== STEP 2: Main Content Container ===== */}
-      <div className="container">
-        {/* ===== STEP 3: Hero Section ===== */}
-        <Hero />
+      {/* Featured Products Section */}
+      <section className="py-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-2">
+              Featured Products
+            </h2>
+            <p className="text-gray-600">
+              Check out our latest and most popular items
+            </p>
+          </div>
 
-        {/* ===== STEP 4: Category Sections ===== */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
+              >
+                <div className="relative h-48 bg-gray-100 flex items-center justify-center">
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-sm">No Image</span>
+                  )}
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-2xl font-bold text-blue-600">
+                      ${product.price}
+                    </span>
+                    <span className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                      {product.category}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/products/${product._id}`)}
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {/* Clothes Category */}
-        <CategorySection
-          title="Best Sellers In Clothes And Wear"
-          bannerImg={clothBannerImg}
-          items={clothesItems}
-          bannerBg="#F47820"
-        />
+      {/* Call to Action Section */}
+      <section className="py-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-12 text-center text-white">
+            <h3 className="text-3xl font-bold mb-4">
+              Special Offers Await You
+            </h3>
+            <p className="text-blue-100 mb-8 text-lg">
+              Get exclusive discounts and early access to new collections
+            </p>
+            <button
+              onClick={() => navigate("/products")}
+              className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition duration-300"
+            >
+              Explore More
+            </button>
+          </div>
+        </div>
+      </section>
 
-        {/* Home Interiors Category */}
-        <CategorySection
-          title="Home Interiors"
-          bannerImg={interiorBannerImg}
-          items={interiorItems}
-          bannerBg="#6C7275"
-        />
+      {/* Features Section */}
+      <section className="py-16 px-4 md:px-8 bg-white bg-opacity-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🚚</span>
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                Fast Shipping
+              </h4>
+              <p className="text-gray-600">
+                Get your orders delivered quickly to your doorstep
+              </p>
+            </div>
 
-        {/* Tech & Electronics Category */}
-        <CategorySection
-          title="Electronics & Gadgets"
-          bannerImg={techBannerImg}
-          items={techItems}
-          bannerBg="#2DAADC"
-        />
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🛡️</span>
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                Secure Payment
+              </h4>
+              <p className="text-gray-600">
+                Safe and encrypted transactions for your peace of mind
+              </p>
+            </div>
 
-        {/* ===== STEP 5: Deals and Offers Section ===== */}
-        <Deals />
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">💬</span>
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                Support 24/7
+              </h4>
+              <p className="text-gray-600">
+                Our team is always ready to help you with any questions
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* ===== STEP 6: Recommended Items Section ===== */}
-        <RecommendedItems />
-
-        {/* ===== STEP 7: Inquiry Form Section ===== */}
-        <InquiryForm />
-
-        {/* ===== STEP 8: Services Section ===== */}
-        <Services />
-
-        {/* ===== STEP 9: Newsletter Subscription ===== */}
-        <Newsletter />
-      </div>
-
-      {/* ===== STEP 10: Footer ===== */}
-      <Footer />
+      {/* Newsletter Section */}
+      <section className="py-16 px-4 md:px-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">
+            Stay Updated
+          </h3>
+          <p className="text-gray-600 mb-8">
+            Subscribe to our newsletter for exclusive offers and updates
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            />
+            <button className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
