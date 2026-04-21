@@ -2,11 +2,13 @@ import React from "react";
 import axiosInstance from "../api/axiosInstance";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -29,24 +31,6 @@ const ProductDetails = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Product Not Found
-          </h1>
-          <button
-            onClick={() => navigate("/products")}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
-          >
-            Back to Products
-          </button>
-        </div>
       </div>
     );
   }
@@ -154,7 +138,12 @@ const ProductDetails = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="flex-1 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 text-lg">
+                <button
+                  onClick={() => {
+                    addToCart(product);
+                  }}
+                  className="flex-1 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 text-lg"
+                >
                   Add to Cart
                 </button>
                 <button className="flex-1 border-2 border-blue-600 text-blue-600 py-4 rounded-lg font-semibold hover:bg-blue-50 transition duration-300 text-lg">

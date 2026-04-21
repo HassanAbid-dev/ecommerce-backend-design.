@@ -6,35 +6,28 @@ export default function Products() {
   const navigate = useNavigate();
   const [productsPerPage, setProductsPerPage] = useState(12);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchedProducts = async () => {
       try {
+        setLoading(true);
         const res = await axiosInstance.get("/products/getAllProducts", {
           params: { limit: productsPerPage, page: currentPage },
         });
         setProducts(res.data.products);
       } catch (error) {
         console.log("ERROR:", error); // 👈 catch the actual error
+      } finally {
+        setLoading(false);
       }
     };
     fetchedProducts();
   }, [productsPerPage, currentPage]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50">
-      {/* Header Section */}
-      <section className="pt-12 pb-8 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-3">
-            Our Products
-          </h1>
-          <p className="text-lg text-gray-600">
-            Explore our complete collection of premium products
-          </p>
-        </div>
-      </section>
-
       {/* Products Grid Section */}
+      {loading && <div className="text-center py-16">Loading products...</div>}
       <section className="py-12 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -92,7 +85,7 @@ export default function Products() {
           </div>
 
           {/* Empty State */}
-          {products.length === 0 && (
+          {products.length === 0 && !loading && (
             <div className="text-center py-16">
               <p className="text-xl text-gray-600">
                 No products found. Please try again later.

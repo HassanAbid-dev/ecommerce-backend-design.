@@ -5,6 +5,7 @@ import Products from "./pages/Products.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import Register from "./pages/Register.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
+import Checkout from "./pages/Checkout.jsx";
 import Home from "./pages/Home.jsx";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />{" "}
+        <Route path="/checkout" element={<Checkout />} />
         {/* 👈 add this */}
       </Route>
 
