@@ -48,7 +48,10 @@ export const updateOrderStatus = async (req, res) => {
 
     if (!order) return res.status(404).json({ message: "Order not found" });
 
-    // Send email to user
+    // ✅ Send response FIRST
+    res.json(order);
+
+    // ✅ Send email in background (after response)
     const template = statusMessages[status];
     if (template && order.user?.email) {
       const itemsList = order.items
@@ -62,23 +65,17 @@ export const updateOrderStatus = async (req, res) => {
         )
         .join("");
 
-      await sendEmail({
+      sendEmail({
         to: order.user.email,
         subject: template.subject,
         html: `
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px">
-            
-            <!-- Header -->
             <div style="background:${template.color};padding:24px;border-radius:8px 8px 0 0;text-align:center">
               <h1 style="color:white;margin:0;font-size:22px">${template.heading}</h1>
             </div>
-
-            <!-- Body -->
             <div style="background:#ffffff;padding:24px;border:1px solid #e5e7eb;border-top:none">
               <p style="color:#374151;font-size:15px">Hi ${order.user.username},</p>
               <p style="color:#374151;font-size:15px">${template.message}</p>
-
-              <!-- Order details -->
               <div style="background:#f9fafb;padding:16px;border-radius:8px;margin:20px 0">
                 <p style="margin:0 0 12px;font-weight:bold;color:#111827">Order details</p>
                 <table style="width:100%;border-collapse:collapse;font-size:14px;color:#374151">
@@ -95,26 +92,18 @@ export const updateOrderStatus = async (req, res) => {
                   Total: $${order.totalAmount.toFixed(2)}
                 </div>
               </div>
-
               <p style="color:#6b7280;font-size:13px">
                 Order ID: ${order._id}<br/>
                 Date: ${new Date(order.createdAt).toLocaleString()}
               </p>
             </div>
-
-            <!-- Footer -->
             <div style="background:#f9fafb;padding:16px;border-radius:0 0 8px 8px;text-align:center;border:1px solid #e5e7eb;border-top:none">
-              <p style="color:#9ca3af;font-size:12px;margin:0">
-                Thank you for shopping with us!
-              </p>
+              <p style="color:#9ca3af;font-size:12px;margin:0">Thank you for shopping with us!</p>
             </div>
-
           </div>
         `,
-      });
+      }).catch((err) => console.error("Email error:", err)); // log but don't crash
     }
-
-    res.json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
