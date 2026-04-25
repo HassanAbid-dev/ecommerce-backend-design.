@@ -11,7 +11,12 @@ import paymentRoutes from "./routes/payment.js";
 
 const app = express();
 
-app.use(cors({ origin: "https://your-app.vercel.app", credentials: true }));
+app.use(
+  cors({
+    origin: "https://ecommerce-backend-design-hsgz.vercel.app/",
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 
 // ✅ express.json() BEFORE payment routes so req.body is parsed
