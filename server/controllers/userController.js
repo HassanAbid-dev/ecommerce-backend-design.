@@ -40,7 +40,12 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7D",
     });
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true, // required for cross-domain
+      sameSite: "none", // required for cross-domain
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     console.error("Error logging in user:", error);
