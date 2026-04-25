@@ -3,12 +3,18 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async ({ to, subject, html }) => {
-  await resend.emails.send({
-    from: "Ecommerce Store <onboarding@resend.dev>",
+  const { data, error } = await resend.emails.send({
+    from: "onboarding@resend.dev",
     to,
     subject,
     html,
   });
+
+  if (error) {
+    console.error("Resend error:", error);
+  } else {
+    console.log("Email sent successfully:", data);
+  }
 };
 
 export default sendEmail;
