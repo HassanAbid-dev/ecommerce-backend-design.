@@ -61,6 +61,10 @@ export const getUserProfile = async (req, res) => {
   }
 };
 export const logoutUser = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   res.status(200).json({ message: "Logout successful" });
 };
