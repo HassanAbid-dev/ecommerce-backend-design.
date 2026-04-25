@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://ecommerce-backend-design-hsgz.vercel.app/",
+    origin: "https://ecommerce-backend-design-hsgz.vercel.app",
     credentials: true,
   }),
 );
