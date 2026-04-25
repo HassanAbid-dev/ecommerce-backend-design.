@@ -115,8 +115,8 @@ const Login = () => {
             <p className="text-gray-600 text-sm">
               Don't have an account?{" "}
               <a
-                href="#"
-                className="text-blue-500 font-semibold hover:underline"
+                onClick={() => navigate("/register")}
+                className="text-blue-500 font-semibold hover:underline hover:cursor-pointer"
               >
                 Create one
               </a>
