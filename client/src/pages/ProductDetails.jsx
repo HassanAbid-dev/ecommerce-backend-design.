@@ -35,6 +35,24 @@ const ProductDetails = () => {
     );
   }
 
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Product Not Found
+          </h1>
+          <button
+            onClick={() => navigate("/products")}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+          >
+            Back to Products
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50">
       {/* Breadcrumb / Back Button */}
